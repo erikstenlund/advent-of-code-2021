@@ -10,7 +10,10 @@ main = do
     let commands = map parseCommand $ lines content
     putStrLn $ show $ handleCommands commands (0, 0)
 
-parseCommand rawString = (\(x,y) -> (x, (read::String->Int) y)) $ (\(x:y:[]) -> (x,y)) $ words rawString
+parseCommand = secondValueToInt . createPair . words
+    where 
+        secondValueToInt (x,y) = (x, (read::String->Int) y)
+        createPair (x:y:[]) = (x, y)
 
 handleCommands :: [Command] -> Position -> Position
 handleCommands (cmd:[]) position = handleCommand cmd position
